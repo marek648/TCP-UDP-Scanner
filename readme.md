@@ -176,7 +176,3 @@ Marek Lörinc
 ## Legal Notice
 
 This tool is intended for network administration and security testing purposes only. Always ensure you have permission to scan the target systems. Unauthorized port scanning may be illegal in your jurisdiction.
-
-## License
-
-[Specify your license here]
