@@ -1,46 +1,85 @@
-# Scanner sieťových služeb
+# TCP/UDP Port Scanner
 
-Jednoduchý TCP, UDP skener v C++, ktorý oskenuje zadanú IP adresu a porty. Na výstup vypíše v akom stave sa porty nachádzajú(otvorený,filtrovaný,uzavrený).
+A simple TCP and UDP port scanner written in C++ that scans a specified IP address or domain name and reports the state of ports (open, filtered, or closed).
 
+## Prerequisites
 
-## Predpoklady
+This tool is designed for Linux-based operating systems. Before running the scanner, you need to install the following dependencies:
 
-Predpokladá sa OS založený na linuxe a pred spustením je potrebné naištalovať prekladač g++ a knižnicu libpcap príkazmi:
-
-```
+### Install g++ compiler
+```bash
 sudo apt install g++
+```
+
+### Install libpcap development library
+```bash
 sudo apt-get install libpcap-dev
 ```
 
-## Spustenie 
+## Building the Project
 
-Najskôr je potrebné program preložiť príkazom:
-
-```
+Compile the program using make:
+```bash
 make
 ```
 
-A potom spustiť príkazom:
+## Usage
 
-```
+Run the scanner with the following syntax:
+```bash
 ./ipk-scan {-i <interface>} -pu <port-ranges> -pt <port-ranges> [<domain-name> | <IP-address>]
 ```
 
-Kde volitľné parametre sú:
-```
--i <interface> : kde argument predstavuje identifikátor rozhrania, inak sa vyberie prvý interface s neloopbackovou IP adresou
-```
-Povinné parametre sú:
-```
-[<domain-name> | <IP-address>] : doménové meno alebo IP adresa skenovaného stroja
-```
-Parametre z ktorých aspoň 1 musí byť zadaný:
-```
--pt <port-ranges> : rozsah alebo jednotlivé porty, ktoré sú oskenované pomocou TCP
--pu <port-ranges> : rozsah alebo jednotlivé porty, ktoré sú oskenované pomocou UCP
+### Parameters
+
+#### Optional Parameters
+- `-i <interface>` - Specifies the network interface to use. If not provided, the first non-loopback interface will be automatically selected.
+
+#### Required Parameters
+- `<domain-name>` or `<IP-address>` - The target domain name or IP address to scan.
+
+#### Port Specification (at least one required)
+- `-pt <port-ranges>` - Port range(s) or individual ports to scan using TCP protocol.
+- `-pu <port-ranges>` - Port range(s) or individual ports to scan using UDP protocol.
+
+**Note:** You must specify at least one of `-pt` or `-pu`.
+
+### Port Range Format
+
+Port ranges can be specified as:
+- Individual ports: `80`
+- Multiple ports: `80,443,8080`
+- Port ranges: `1-1024`
+- Combination: `22,80-100,443`
+
+## Examples
+
+Scan TCP ports 1-1000 on example.com:
+```bash
+./ipk-scan -pt 1-1000 example.com
 ```
 
+Scan UDP ports 53 and 161 on 192.168.1.1:
+```bash
+./ipk-scan -pu 53,161 192.168.1.1
+```
 
-## Autor
+Scan both TCP and UDP ports on a specific interface:
+```bash
+./ipk-scan -i eth0 -pt 80,443 -pu 53,67 example.com
+```
 
-* **Marek Lörinc** 
+## Output
+
+The scanner reports the status of each scanned port:
+- **Open** - Port is accepting connections
+- **Closed** - Port is reachable but not accepting connections
+- **Filtered** - Port status cannot be determined (likely blocked by firewall)
+
+## Author
+
+Marek Lörinc
+
+## License
+
+[Specify your license here]
